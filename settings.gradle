@@ -1,0 +1,2 @@
+rootProject.name='Bibliotheque'
+include ':app'

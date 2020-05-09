@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bibliotheque</string>
+    <string name="id">Id : </string>
+    <string name="titre">Titre : </string>
+    <string name="autheur">Auteur : </string>
+    <string name="motCles">Mots-cles : </string>
+    <string name="resume">Resume : </string>
+</resources>
