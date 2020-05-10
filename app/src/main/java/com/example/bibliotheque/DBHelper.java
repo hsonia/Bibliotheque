@@ -121,7 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Books> RechercherBooks(String ptitre){
         ArrayList<Books> array_list1 = new ArrayList<Books>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =db.rawQuery( "select * from Books where titre like ? or motCles like ? ORDER BY titre ASC", new String[] { "%" + ptitre + "%" });
+        Cursor res =db.rawQuery( "select * from Books where titre like ? or motCles like ? ORDER BY titre ASC", new String[] { "%" + ptitre + "%", "%" + ptitre + "%" });
         res.moveToFirst();
         Books b;
 // on parcours le résultat et on crée pour chaque ligne un objet Rdv

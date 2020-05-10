@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DBHelper db = new DBHelper(this);
+        db.insertBooks("tit1","aut1","mot1","resume resume resume 11111");
+        db.insertBooks("tit2","aut2","mot2","resume resume resume 22222");
+        db.insertBooks("tit3","aut3","mot3","resume resume resume 33333");
+        db.insertBooks("tit4","aut4","mot4","resume resume resume 44444");
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

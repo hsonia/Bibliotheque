@@ -4,80 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#8BCF7348"
     tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="1117dp"
-        android:layout_height="1803dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bib2" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.498">
 
         <Button
             android:id="@+id/ajouter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="#40F5F5F5"
             android:onClick="ecran3"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="Ajouter un livre" />
+            android:padding="20dp"
+            android:text="Ajouter un livre"
+            android:textSize="26sp" />
 
         <Button
             android:id="@+id/supprimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="#40F5F5F5"
             android:onClick="ecran4"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="Supprimer un livre" />
+            android:padding="20dp"
+            android:text="Supprimer un livre"
+            android:textSize="26sp" />
 
         <Button
             android:id="@+id/recherche"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="#40F5F5F5"
             android:onClick="ecran2"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:padding="20dp"
             android:text="Chercher un livre"
-            android:textSize="14sp" />
+            android:textSize="26sp" />
 
         <Button
             android:id="@+id/afficher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="#40F5F5F5"
             android:onClick="ecran1"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:padding="20dp"
             android:text="afficher la liste des livres"
-            android:textSize="14sp" />
+            android:textSize="26sp" />
 
     </LinearLayout>
 
