@@ -1,5 +1,11 @@
 package com.example.bibliotheque;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -11,28 +17,95 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DBHelper extends SQLiteOpenHelper {
+    public static final String DATABASE_NAME = "bilioteque.db";
+    public static final String BOOKS_TABLE_NAME = "livres";
+    private static String DATABASE_PATH = "";
 
-    public static final String DATABASE_NAME = "DBHelper";
-    public static final String BOOKS_TABLE_NAME = "Books";
+    private static final int DB_VERSION = 1;
+    private SQLiteDatabase mDataBase;
+    private final Context mContext;
+    private boolean mNeedUpdate = false;
     private HashMap hp;
     public DBHelper(Context context)
     {
-        super(context, DATABASE_NAME , null, 1);
+
+        super(context, DATABASE_NAME, null, DB_VERSION);
+        if (android.os.Build.VERSION.SDK_INT >= 17)
+            DATABASE_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        else
+            DATABASE_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+        this.mContext = context;
+
+        copyDataBase();
+
+        this.getReadableDatabase();
     }
+    public void updateDataBase() throws IOException {
+        if (mNeedUpdate) {
+            File dbFile = new File(DATABASE_PATH + DATABASE_NAME);
+            if (dbFile.exists())
+                dbFile.delete();
+
+            copyDataBase();
+
+            mNeedUpdate = false;
+        }
+    }
+
+    private boolean checkDataBase() {
+        File dbFile = new File(DATABASE_PATH + DATABASE_NAME);
+        return dbFile.exists();
+    }
+
+    private void copyDataBase() {
+        if (!checkDataBase()) {
+            this.getReadableDatabase();
+            this.close();
+            try {
+                copyDBFile();
+            } catch (IOException mIOException) {
+                File dbFile = new File(DATABASE_PATH + DATABASE_NAME);
+                if (dbFile.exists())
+                    dbFile.delete();
+                mIOException.printStackTrace();
+                throw new Error("ErrorCopyingDataBase");
+            }
+        }
+    }
+
+    private void copyDBFile() throws IOException {
+        InputStream mInput = mContext.getResources().openRawResource(R.raw.bilioteque);
+        OutputStream mOutput = new FileOutputStream(DATABASE_PATH + DATABASE_NAME);
+        byte[] mBuffer = new byte[1024];
+        int mLength;
+        while ((mLength = mInput.read(mBuffer)) > 0)
+            mOutput.write(mBuffer, 0, mLength);
+        mOutput.flush();
+        mOutput.close();
+        mInput.close();
+    }
+
+    public boolean openDataBase() throws SQLException {
+        mDataBase = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+        return mDataBase != null;
+    }
+
+    @Override
+    public synchronized void close() {
+        if (mDataBase != null)
+            mDataBase.close();
+        super.close();
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-// TODO Auto-generated method stub
-        db.execSQL(
-                "create table IF NOT EXISTS Books " +
-                        "(id Integer primary key autoincrement, titre text,auteur text,motCles text,resume text)"
-        );
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-// TODO Auto-generated method stub
-        db.execSQL("DROP TABLE IF EXISTS Books");
-        onCreate(db);
+        if (newVersion > oldVersion)
+            mNeedUpdate = true;
     }
 
     public boolean insertBooks (String ptitre, String pauteur, String pmotCles, String presume)
@@ -99,7 +172,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Books> array_list = new ArrayList<Books>();
         SQLiteDatabase db = this.getReadableDatabase();
 // on lance la requête
-        Cursor res = db.rawQuery( "select * from Books ORDER BY titre ASC", null );
+        Cursor res = db.rawQuery( "select * from "+BOOKS_TABLE_NAME+" ORDER BY titre ASC", null );
         res.moveToFirst();
         Books b;
 // on parcours le résultat et on crée pour chaque ligne un objet Books
@@ -121,7 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Books> RechercherBooks(String ptitre){
         ArrayList<Books> array_list1 = new ArrayList<Books>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =db.rawQuery( "select * from Books where titre like ? or motCles like ? ORDER BY titre ASC", new String[] { "%" + ptitre + "%", "%" + ptitre + "%" });
+        Cursor res =db.rawQuery( "select * from "+BOOKS_TABLE_NAME+" where titre like ? or motCles like ? or auteur like ? or resume like ? ORDER BY titre ASC", new String[] { "%" + ptitre + "%", "%" + ptitre + "%", "%" + ptitre + "%", "%" + ptitre + "%" });
         res.moveToFirst();
         Books b;
 // on parcours le résultat et on crée pour chaque ligne un objet Rdv
